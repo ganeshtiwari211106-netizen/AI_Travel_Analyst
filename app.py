@@ -83,4 +83,36 @@ if st.button("🔮 Predict Flight Price", use_container_width=True):
     predicted_price = model.predict(input_df)[0]
     
     st.markdown("---")
-    st.success(f"### Estimated Flight Price: **₹ {predicted_price:,.2f}**")
+    st.success(f"### Estimated Flight Price: **₹ {predicted_price:,.2f}**") 
+
+# --- PART 3: CHEAPEST BOOKING TIME ANALYSIS ---
+    st.markdown("---")
+    st.subheader("📅 Cheapest Booking Time Analysis")
+    st.markdown(f"Optimal booking window forecast for your specific route (**{source}** ➔ **{destination}**):")
+    
+# Create a progress bar while the model simulates prices
+    with st.spinner("Simulating price trends..."):
+        # 1. Replicate the single input row 90 times instantly
+        batch_df = pd.concat([input_df]*90, ignore_index=True)
+        
+        # 2. Update the 'Days_Before_Departure' column with values 1 through 90
+        if "Days_Before_Departure" in batch_df.columns:
+            batch_df["Days_Before_Departure"] = range(1, 91)
+            
+        # 3. Predict all 90 prices in one single, lightning-fast batch!
+        simulated_prices = model.predict(batch_df)
+            
+        # 4. Convert to DataFrame and plot
+        trend_df = pd.DataFrame({
+            "Days Before Departure": range(1, 91),
+            "Predicted Price (INR)": simulated_prices
+        }).set_index("Days Before Departure")
+        
+        # Render an interactive line chart natively in Streamlit
+        st.line_chart(trend_df, y="Predicted Price (INR)", color="#ff4b4b")
+        
+        # Find and display the absolute cheapest day to book
+        best_day = trend_df["Predicted Price (INR)"].idxmin()
+        best_price = trend_df["Predicted Price (INR)"].min()
+        
+        st.info(f"💡 **Recommendation:** For this specific flight configuration, the algorithm projects the cheapest fare (₹{best_price:,.2f}) if you book exactly **{best_day} days in advance**.")
