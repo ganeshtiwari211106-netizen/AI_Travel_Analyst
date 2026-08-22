@@ -2,7 +2,7 @@
 
 A comprehensive Machine Learning solution developed for the MIC AIML Recruitment Challenge (Track 3: 2nd Year Track — Part 1 Exploration + Part 2 Modeling).
 
-🎥 **Project Demo Video (3–5 Min):** [Paste Your Public Google Drive / YouTube Video Link Here]
+🎥 **Project Demo Video (3–5 Min):** (https://drive.google.com/drive/folders/1byNnBKjq9HTovBZmKoR5A291EVXAGai3?usp=sharing)
 
 ---
 
